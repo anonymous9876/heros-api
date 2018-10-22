@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<!-- https://stackoverflow.com/questions/42361350/liquibase-insert-rows-with-uuid -->
+	<property name="uuid_function" value="uid.uuid_generate_v4()"
+		dbms="postgresql" />
+	<property name="uuid_function" value="NEWID()" dbms="mssql" />
+	<property name="uuid_function" value="sys_guid()"
+		dbms="oracle" />
+	<property name="uuid_function" value="RANDOM_UUID()" dbms="h2" />
+
+	<changeSet id="1" author="anonymous">
+		<createTable tableName="esb_mission">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true" />
+			</column>
+
+			<column name="num_bu" type="NUMBER(3)"></column>
+			<column name="num" type="VARCHAR2(30)"></column>
+			<column name="date" type="DATE"></column>
+			<column name="version" type="VARCHAR2(30)"></column>
+			<column name="etat" type="VARCHAR2(25)"></column>
+			<column name="etat_date" type="DATE"></column>
+			<column name="num_hero" type="VARCHAR2(15)"></column>
+			<column name="nom_hero" type="VARCHAR2(30)"></column>
+			<column name="total_amount" type="NUMBER"></column>
+			<column name="currency" type="VARCHAR2(15)"></column>
+
+			<column name="date_liv_souh" type="DATE"></column>
+			<column name="date_liv_annon" type="DATE"></column>
+			<column name="adr_lib_adr001" type="VARCHAR2(240)"></column>
+			<column name="adr_lib_adr002" type="VARCHAR2(240)"></column>
+			<column name="adr_lib_adr003" type="VARCHAR2(240)"></column>
+			<column name="adr_cod_pst" type="VARCHAR2(60)"></column>
+			<column name="adr_lib_vil" type="VARCHAR2(60)"></column>
+			<column name="adr_num_pay" type="VARCHAR2(60)"></column>
+			<column name="last_name" type="VARCHAR2(150)"></column>
+			<column name="first_name" type="VARCHAR2(150)"></column>
+			<column name="email" type="VARCHAR2(320)"></column>
+			<column name="ldap" type="VARCHAR2(100)"></column>
+			<column name="num_lig" type="NUMBER"></column>
+			<column name="num_art_int" type="VARCHAR2(300)"></column>
+			<column name="num_art_fou" type="VARCHAR2(150)"></column>
+			<column name="description_art" type="VARCHAR2(240)"></column>
+			<column name="unite" type="VARCHAR2(50)"></column>
+			<column name="qte" type="NUMBER"></column>
+			<column name="pu" type="NUMBER"></column>
+			<column name="mnt_lig" type="NUMBER"></column>
+			<column name="type_lig" type="VARCHAR2(30)"></column>
+			<column name="qte_rcpt" type="NUMBER"></column>
+		</createTable>
+		<addUniqueConstraint
+			tableName="esb_mission" columnNames="num_bu, num, num_lig"
+			constraintName="u_esb_mission" />
+
+		<createTable tableName="aux_mission">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true" />
+			</column>
+
+			<!-- <column name="num_bu" type="NUMBER(3)" ></column> -->
+			<column name="num" type="VARCHAR2(30)"></column>
+			<column name="date" type="DATE"></column>
+			<column name="version" type="VARCHAR2(30)"></column>
+			<column name="etat" type="VARCHAR2(25)"></column>
+			<column name="etat_date" type="DATE"></column>
+			<column name="num_hero" type="VARCHAR2(15)"></column>
+			<column name="nom_hero" type="VARCHAR2(30)"></column>
+			<column name="total_amount" type="NUMBER"></column>
+			<column name="currency" type="VARCHAR2(15)"></column>
+		</createTable>
+
+		<createTable tableName="hero">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="num" type="VARCHAR2(15)"></column>
+			<column name="name" type="VARCHAR2(30)"></column>
+		</createTable>
+
+		<createTable tableName="mission">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true" />
+			</column>
+
+			<!-- <column name="num_bu" type="NUMBER(3)" ></column> -->
+			<column name="num" type="VARCHAR2(30)"></column>
+			<column name="date" type="DATE"></column>
+			<column name="version" type="VARCHAR2(30)"></column>
+			<column name="etat" type="VARCHAR2(25)"></column>
+			<column name="etat_date" type="DATE"></column>
+			<column name="hero_id" type="UUID">
+				<constraints
+					foreignKeyName="fk_mission_supplier_id"
+					references="hero(id)" />
+			</column>
+			<column name="total_amount" type="NUMBER"></column>
+			<column name="currency" type="VARCHAR2(15)"></column>
+		</createTable>
+
+		<addUniqueConstraint
+			tableName="mission" columnNames="num"
+			constraintName="u_mission" />
+
+		<createTable tableName="product_line_item">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true" />
+			</column>
+
+			<column name="date_liv_accept" type="DATE"></column>
+			<!-- <column name="num_bu" type="NUMBER(3)" ></column> -->
+			<!-- <column name="num" type="VARCHAR2(30)"></column> -->
+			<column name="mission_id" type="UUID">
+				<constraints references="mission(id)"
+					nullable="false" foreignKeyName="fk_detail_header" />
+			</column>
+			<column name="date_liv_souh" type="DATE"></column>
+			<column name="date_liv_annon" type="DATE"></column>
+			<column name="adr_lib_adr001" type="VARCHAR2(240)"></column>
+			<column name="adr_lib_adr002" type="VARCHAR2(240)"></column>
+			<column name="adr_lib_adr003" type="VARCHAR2(240)"></column>
+			<column name="adr_cod_pst" type="VARCHAR2(60)"></column>
+			<column name="adr_lib_vil" type="VARCHAR2(60)"></column>
+			<column name="adr_num_pay" type="VARCHAR2(60)"></column>
+			<column name="buyer_id" type="UUID"></column>
+			<column name="num_lig" type="NUMBER"></column>
+			<column name="num_art_int" type="VARCHAR2(300)"></column>
+			<column name="num_art_fou" type="VARCHAR2(150)"></column>
+			<column name="description_art" type="VARCHAR2(240)"></column>
+			<column name="unite" type="VARCHAR2(50)"></column>
+			<column name="qte" type="NUMBER"></column>
+			<column name="pu" type="NUMBER"></column>
+			<column name="mnt_lig" type="NUMBER"></column>
+			<column name="type_lig" type="VARCHAR2(30)"></column>
+			<column name="qte_rcpt" type="NUMBER"></column>
+		</createTable>
+
+		<addUniqueConstraint
+			tableName="product_line_item"
+			columnNames="mission_id, num_lig"
+			constraintName="u_product_line_item" />
+
+		<createTable tableName="buyer">
+			<column name="id" type="UUID"
+				defaultValueComputed="${uuid_function}">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="ldap" type="VARCHAR2(100)"></column>
+			<column name="last_name" type="VARCHAR2(150)"></column>
+			<column name="first_name" type="VARCHAR2(150)"></column>
+			<column name="email" type="VARCHAR2(320)"></column>
+		</createTable>
+
+		<createTable tableName="sequence">
+			<column name="name" type="VARCHAR2(50)">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="last_change" type="timestamp with time zone">
+				<constraints nullable="false" />
+			</column>
+			<column name="seq" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="i1" author="cd">
+		<insert tableName="hero">
+			<column name="id" type="UUID">1</column>
+			<column name="num" type="VARCHAR2(15)">1</column>
+			<column name="name" type="VARCHAR2(30)">Batman</column>
+		</insert>
+
+		<insert tableName="mission">
+			<!-- <column name="num_bu" type="NUMBER(3)" ></column> -->
+			<column name="id" type="UUID">1</column>
+			<column name="num" type="VARCHAR2(30)">2</column>
+			<column name="date" type="DATE">2018-01-01</column>
+			<column name="version" type="VARCHAR2(30)">1</column>
+			<column name="etat" type="VARCHAR2(25)">FAIT</column>
+			<column name="etat_date" type="DATE">2018-01-01</column>
+
+			<column name="hero_id">1</column>
+			<column name="total_amount" type="NUMBER">100</column>
+			<column name="currency" type="VARCHAR2(15)">$</column>
+		</insert>
+
+		<insert tableName="hero">
+			<column name="id" type="UUID">2</column>
+			<column name="num" type="VARCHAR2(15)">2</column>
+			<column name="name" type="VARCHAR2(30)">Superman</column>
+		</insert>
+
+		<insert tableName="mission">
+			<column name="id" type="UUID">2</column>
+			<!-- <column name="num_bu" type="NUMBER(3)" ></column> -->
+			<column name="num" type="VARCHAR2(30)">3</column>
+			<column name="date" type="DATE">2018-01-02</column>
+			<column name="version" type="VARCHAR2(30)">1</column>
+			<column name="etat" type="VARCHAR2(25)">A Faire</column>
+			<column name="etat_date" type="DATE">2018-01-02</column>
+			<column name="hero_id">2</column>
+			<column name="total_amount" type="NUMBER">1000</column>
+			<column name="currency" type="VARCHAR2(15)">$</column>
+		</insert>
+
+		<insert tableName="buyer">
+			<column name="id">10</column>
+			<column name="last_name" type="VARCHAR2(150)">PEACH</column>
+			<column name="first_name" type="VARCHAR2(150)">princess</column>
+			<column name="email" type="VARCHAR2(320)">PEACH@a.com</column>
+			<column name="ldap" type="VARCHAR2(100)">2313</column>
+		</insert>
+
+		<insert tableName="product_line_item">
+			<column name="date_liv_accept" type="DATE"></column>
+			<!-- <column name="num_bu" type="NUMBER(3)" ></column> -->
+			<!-- <column name="num" type="VARCHAR2(30)"></column> -->
+			<column name="mission_id" type="UUID">1</column>
+			<column name="date_liv_souh" type="DATE">2018-01-02</column>
+			<column name="date_liv_annon" type="DATE">2018-01-03</column>
+			<column name="adr_lib_adr001" type="VARCHAR2(240)">l1</column>
+			<column name="adr_lib_adr002" type="VARCHAR2(240)">l2</column>
+			<column name="adr_lib_adr003" type="VARCHAR2(240)">l3</column>
+			<column name="adr_cod_pst" type="VARCHAR2(60)">59123</column>
+			<column name="adr_lib_vil" type="VARCHAR2(60)">Lille</column>
+			<column name="adr_num_pay" type="VARCHAR2(60)">FR</column>
+			<column name="buyer_id">10</column>
+			<column name="num_lig" type="NUMBER">1</column>
+			<column name="num_art_int" type="VARCHAR2(300)">12</column>
+			<column name="num_art_fou" type="VARCHAR2(150)">123</column>
+			<column name="description_art" type="VARCHAR2(240)">batte</column>
+			<column name="unite" type="VARCHAR2(50)">U</column>
+			<column name="qte" type="NUMBER">1</column>
+			<column name="pu" type="NUMBER">10</column>
+			<column name="mnt_lig" type="NUMBER">10</column>
+			<column name="type_lig" type="VARCHAR2(30)">ARME</column>
+			<column name="qte_rcpt" type="NUMBER">1</column>
+		</insert>
+
+		<insert tableName="buyer">
+			<column name="id">11</column>
+			<column name="last_name" type="VARCHAR2(150)">TOAD</column>
+			<column name="first_name" type="VARCHAR2(150)">champi</column>
+			<column name="email" type="VARCHAR2(320)">TOAD@a.com</column>
+			<column name="ldap" type="VARCHAR2(100)">777</column>
+		</insert>
+
+		<insert tableName="product_line_item">
+			<column name="date_liv_accept" type="DATE"></column>
+			<!-- <column name="num_bu" type="NUMBER(3)" ></column> -->
+			<!-- <column name="num" type="VARCHAR2(30)"></column> -->
+			<column name="mission_id" type="UUID">2</column>
+			<column name="date_liv_souh" type="DATE">2018-01-02</column>
+			<column name="date_liv_annon" type="DATE">2018-01-03</column>
+			<column name="adr_lib_adr001" type="VARCHAR2(240)">l1</column>
+			<column name="adr_lib_adr002" type="VARCHAR2(240)">l2</column>
+			<column name="adr_lib_adr003" type="VARCHAR2(240)">l3</column>
+			<column name="adr_cod_pst" type="VARCHAR2(60)">59123</column>
+			<column name="adr_lib_vil" type="VARCHAR2(60)">Marseille</column>
+			<column name="adr_num_pay" type="VARCHAR2(60)">FR</column>
+			<column name="buyer_id">11</column>
+			<column name="num_lig" type="NUMBER">1</column>
+			<column name="num_art_int" type="VARCHAR2(300)">12</column>
+			<column name="num_art_fou" type="VARCHAR2(150)">123</column>
+			<column name="description_art" type="VARCHAR2(240)">batte</column>
+			<column name="unite" type="VARCHAR2(50)">U</column>
+			<column name="qte" type="NUMBER">1</column>
+			<column name="pu" type="NUMBER">10</column>
+			<column name="mnt_lig" type="NUMBER">10</column>
+			<column name="type_lig" type="VARCHAR2(30)">BOUCLIER</column>
+			<column name="qte_rcpt" type="NUMBER">1</column>
+		</insert>
+	</changeSet>
+</databaseChangeLog>
