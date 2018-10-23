@@ -1,6 +1,7 @@
 package name.anonymous.heros.api.web.repository;
 
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -11,6 +12,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.dozer.DozerBeanMapper;
+import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import name.anonymous.heros.api.web.model.entity.Mission;
 import name.anonymous.heros.api.web.pagination.query.builder.jpa.criteria.model.result.JpaQueryResult;
+import name.anonymous.heros.api.web.pagination.query.builder.jpa.criteria.parser.AbstractJpaRuleParser;
 import name.anonymous.heros.api.web.pagination.rest.RestPaginationCriteria;
+import name.anonymous.heros.api.web.pagination.rest.SortOrder;
 import name.anonymous.heros.api.web.pagination.rest.util.hibernate.HibernatePaginationService;
 import name.anonymous.heros.api.web.repository.configuration.hibernate.integrator.MetadataExtractorIntegrator;
 
@@ -32,7 +36,7 @@ public class MissionRepository {
 
 	@Autowired
 	private DozerBeanMapper dozerBeanMapper;
-	
+
 	@Autowired
 	private ObjectMapper objectMapper;
 
@@ -72,9 +76,13 @@ public class MissionRepository {
 		if (jpaQueryResult != null) {
 			cq.where(jpaQueryResult.getPredicate());
 		}
+		for (Entry<String, SortOrder> entry: restPaginationCriteria.getSortBy().getSortBys().entrySet()) {
+			cq.orderBy(new OrderImpl((AbstractJpaRuleParser.getPath(r, entry.getKey())), SortOrder.ASC.equals(entry.getValue())));
+		}
+
 		return cq;
 	}
-	
+
 	private CriteriaQuery<Long> getCriteriaQueryCountFindAll(RestPaginationCriteria restPaginationCriteria) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
@@ -86,7 +94,7 @@ public class MissionRepository {
 		}
 		return cq;
 	}
-	
+
 	public Iterable<Mission> findAll(String buCode, String hero, RestPaginationCriteria restPaginationCriteria) {
 		CriteriaQuery<Mission> cq = getCriteriaQueryFindAll(restPaginationCriteria);
 		TypedQuery<Mission> q = em.createQuery(cq)
@@ -113,7 +121,7 @@ public class MissionRepository {
 	public Long getCountAfterFiltering(String buCode, String hero, RestPaginationCriteria restPaginationCriteria) {
 		return em.createQuery(getCriteriaQueryCountFindAll(restPaginationCriteria)).getSingleResult();
 	}
-	
+
 	public List<String> getSelectMissionEntityPropertiesPath() {
 		return MetadataExtractorIntegrator.INSTANCE.getEntityPropertyPaths(Mission.class);
 	}

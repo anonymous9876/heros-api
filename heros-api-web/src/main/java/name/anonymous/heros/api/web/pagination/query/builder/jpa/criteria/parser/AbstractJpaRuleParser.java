@@ -29,7 +29,7 @@ public abstract class AbstractJpaRuleParser implements IRuleParser {
 	 * @param <T> attribut type
 	 * @return path
 	 */
-	protected <T> Path<T> getPath(final Path<?> base, final String name) {
+	public static <T> Path<T> getPath(final Path<?> base, final String name) {
 		final Path<T> result;
 		final int index = name.indexOf('.');
 		if (index == -1) {
@@ -50,7 +50,7 @@ public abstract class AbstractJpaRuleParser implements IRuleParser {
 		}
 		return result;
 	}
-	
+
 	protected Object convert(Object value, Class<?> clazz) {
         if (clazz.isAssignableFrom(String.class)) {
             if (!(value instanceof String)) {
