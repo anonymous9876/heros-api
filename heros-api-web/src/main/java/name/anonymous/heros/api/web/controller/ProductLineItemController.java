@@ -35,7 +35,7 @@ public class ProductLineItemController {
 
     @ApiOperation(value = "Retrieves a list")
     @ApiResponse(code = 200, message = "Success of the recovery", response = PaginableRestResult.class)
-    @GetMapping("order-indirect-headers/{idMission}/order-indirect-details")
+    @GetMapping("mission-indirect-headers/{idMission}/mission-indirect-details")
     @ResponseBody
     public PaginableRestResult<ProductLineItemDto> listheroPaginated(
 	    @ApiParam(name = "buCode", value = "buCode", required = true) @PathVariable("buCode") String buCode,

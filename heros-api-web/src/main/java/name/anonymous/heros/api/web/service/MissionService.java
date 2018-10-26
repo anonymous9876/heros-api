@@ -18,15 +18,16 @@ import name.anonymous.heros.api.web.repository.MissionRepository;
 @Service
 public class MissionService {
 	@Autowired
-	private MissionRepository MissionRepository;
+	private MissionRepository missionRepository;
 
 	@Autowired
 	private DozerBeanMapper dozerBeanMapper;
 
+	@Transactional
 	public Iterable<MissionDto> findAll(String buCode, String hero, RestPaginationCriteria restPaginationCriteria) {
-		Iterable<Mission> Missions = findAllEntities(buCode, hero, restPaginationCriteria);
+		Iterable<Mission> missions = findAllEntities(buCode, hero, restPaginationCriteria);
 		List<MissionDto> result = new ArrayList<>();
-		for (Mission Mission : Missions) {
+		for (Mission Mission : missions) {
 			result.add(dozerBeanMapper.map(Mission, MissionDto.class));
 		}
 		return result;
@@ -34,42 +35,42 @@ public class MissionService {
 
 	@Transactional
 	public Iterable<Mission> findAllEntities(String buCode, String hero, RestPaginationCriteria restPaginationCriteria) {
-		return MissionRepository.findAll(buCode, hero, restPaginationCriteria);
+		return missionRepository.findAll(buCode, hero, restPaginationCriteria);
 	}
 
 	@Transactional
 	public Long getCountBeforeFiltering(String buCode, String hero, RestPaginationCriteria restPaginationCriteria) {
-		return MissionRepository.getCountBeforeFiltering(buCode, hero, restPaginationCriteria);
+		return missionRepository.getCountBeforeFiltering(buCode, hero, restPaginationCriteria);
 	}
 
 	@Transactional
 	public Long getCountAfterFiltering(String buCode, String hero, RestPaginationCriteria restPaginationCriteria) {
-		return MissionRepository.getCountAfterFiltering(buCode, hero, restPaginationCriteria);
+		return missionRepository.getCountAfterFiltering(buCode, hero, restPaginationCriteria);
 	}
 
 	public List<String> getSelectMissionEntityPropertyPaths() {
-		return MissionRepository.getSelectMissionEntityPropertiesPath();
+		return missionRepository.getSelectMissionEntityPropertiesPath();
 	}
 
 	@Transactional
-	public void newOrder(String buCode, MissionDto MissionDto) {
-		Mission Mission = dozerBeanMapper.map(MissionDto, Mission.class);
-		MissionRepository.newOrder(buCode, Mission);
+	public void newMission(String buCode, MissionDto missionDto) {
+		Mission mission = dozerBeanMapper.map(missionDto, Mission.class);
+		missionRepository.newMission(buCode, mission);
 	}
 
 	@Transactional
-	public void deleteOrder(String buCode, String orderId) {
-		MissionRepository.deleteOrder(buCode, UUID.fromString(orderId));
+	public void deleteMission(String buCode, String orderId) {
+		missionRepository.deleteMission(buCode, UUID.fromString(orderId));
 	}
 
 	@Transactional
-	public void patchOrder(String MissionId, MissionDto MissionDtoPatch) {
-		Mission Mission = dozerBeanMapper.map(MissionDtoPatch, Mission.class);
-		MissionRepository.patchOrder(UUID.fromString(MissionId), Mission);
+	public void patchMission(String missionId, MissionDto missionDtoPatch) {
+		Mission mission = dozerBeanMapper.map(missionDtoPatch, Mission.class);
+		missionRepository.patchMission(UUID.fromString(missionId), mission);
 	}
 
 	@Transactional
-	public void putOrder(Mission Mission) {
-		MissionRepository.putOrder(Mission);
+	public void putMission(Mission mission) {
+		missionRepository.putMission(mission);
 	}
 }

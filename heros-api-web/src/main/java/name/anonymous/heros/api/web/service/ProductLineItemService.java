@@ -17,7 +17,7 @@ import name.anonymous.heros.api.web.repository.ProductLineItemRepository;
 @Service
 public class ProductLineItemService {
 	@Autowired
-	private ProductLineItemRepository ProductLineItemRepository;
+	private ProductLineItemRepository productLineItemRepository;
 
 	@Autowired
 	private DozerBeanMapper dozerBeanMapper;
@@ -25,10 +25,10 @@ public class ProductLineItemService {
 	@Transactional
 	public Iterable<ProductLineItemDto> findAll(String buCode, String hero, String idMission,
 			RestPaginationCriteria restPaginationCriteria) {
-		Iterable<ProductLineItem> ProductLineItems = findAllEntities(buCode, hero, idMission,
+		Iterable<ProductLineItem> productLineItems = findAllEntities(buCode, hero, idMission,
 				restPaginationCriteria);
 		List<ProductLineItemDto> result = new ArrayList<>();
-		for (ProductLineItem ProductLineItem : ProductLineItems) {
+		for (ProductLineItem ProductLineItem : productLineItems) {
 			result.add(dozerBeanMapper.map(ProductLineItem, ProductLineItemDto.class));
 		}
 		return result;
@@ -37,22 +37,22 @@ public class ProductLineItemService {
 	@Transactional
 	public Iterable<ProductLineItem> findAllEntities(String buCode, String hero, String idMission,
 			RestPaginationCriteria restPaginationCriteria) {
-		return ProductLineItemRepository.findAll(buCode, hero, UUID.fromString(idMission), restPaginationCriteria);
+		return productLineItemRepository.findAll(buCode, hero, UUID.fromString(idMission), restPaginationCriteria);
 	}
 
 	public Long getCountBeforeFiltering(String buCode, String hero, String idMission,
 			RestPaginationCriteria restPaginationCriteria) {
-		return ProductLineItemRepository.getCountBeforeFiltering(buCode, hero, UUID.fromString(idMission),
+		return productLineItemRepository.getCountBeforeFiltering(buCode, hero, UUID.fromString(idMission),
 				restPaginationCriteria);
 	}
 
 	public Long getCountAfterFiltering(String buCode, String hero, String idMission,
 			RestPaginationCriteria restPaginationCriteria) {
-		return ProductLineItemRepository.getCountAfterFiltering(buCode, hero, UUID.fromString(idMission),
+		return productLineItemRepository.getCountAfterFiltering(buCode, hero, UUID.fromString(idMission),
 				restPaginationCriteria);
 	}
 
 	public List<String> getSelectProductLineItemEntityPropertyPaths() {
-		return ProductLineItemRepository.getSelectProductLineItemEntityPropertyPaths();
+		return productLineItemRepository.getSelectProductLineItemEntityPropertyPaths();
 	}
 }

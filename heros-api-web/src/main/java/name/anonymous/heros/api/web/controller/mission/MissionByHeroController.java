@@ -26,21 +26,21 @@ public class MissionByHeroController {
     private ParamToRestResultsService paramToRestResultsService;
 
     @Autowired
-    private MissionService MissionService;
+    private MissionService missionService;
 
     @ApiOperation(value = "Retrieves a list")
     @ApiResponse(code = 200, message = "Success of the recovery", response = PaginableRestResult.class)
-    @GetMapping("order-indirect-headers")
+    @GetMapping("mission-indirect-headers")
     @ResponseBody
     public PaginableRestResult<MissionDto> listOrderPaginated(
 	    @ApiParam(name = "buCode", value = "buCode", required = true) @PathVariable("buCode") String buCode,
 	    @ApiParam(name = "hero", value = "hero", required = true) @PathVariable("hero") String hero,
 	    @Valid PaginatedRequest paginatedRequest) {
 	return paramToRestResultsService.getRestPaginationCriteria(
-		MissionService.getSelectMissionEntityPropertyPaths(),
-		(RestPaginationCriteria restPaginationCriteria) -> MissionService.findAll(buCode, hero, restPaginationCriteria),
-		(RestPaginationCriteria restPaginationCriteria) -> MissionService.getCountBeforeFiltering(buCode, hero, restPaginationCriteria),
-		(RestPaginationCriteria restPaginationCriteria) -> MissionService.getCountAfterFiltering(buCode, hero, restPaginationCriteria),
+		missionService.getSelectMissionEntityPropertyPaths(),
+		(RestPaginationCriteria restPaginationCriteria) -> missionService.findAll(buCode, hero, restPaginationCriteria),
+		(RestPaginationCriteria restPaginationCriteria) -> missionService.getCountBeforeFiltering(buCode, hero, restPaginationCriteria),
+		(RestPaginationCriteria restPaginationCriteria) -> missionService.getCountAfterFiltering(buCode, hero, restPaginationCriteria),
 		paginatedRequest);
     }
 }

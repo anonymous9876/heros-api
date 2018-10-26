@@ -126,19 +126,19 @@ public class MissionRepository {
 		return MetadataExtractorIntegrator.INSTANCE.getEntityPropertyPaths(Mission.class);
 	}
 
-	public void newOrder(String buCode, Mission Mission) {
+	public void newMission(String buCode, Mission Mission) {
 		em.persist(Mission);
 	}
 
-	public void deleteOrder(String buCode, UUID MissionId) {
+	public void deleteMission(String buCode, UUID MissionId) {
 		em.remove(em.getReference(Mission.class, MissionId));
 	}
 
-	public void putOrder(Mission Mission) {
+	public void putMission(Mission Mission) {
 		em.merge(Mission);
 	}
 
-	public void patchOrder(UUID MissionId, Mission MissionPatch) {
+	public void patchMission(UUID MissionId, Mission MissionPatch) {
 		Mission Mission = em.find(Mission.class, MissionId);
 		dozerBeanMapper.map(MissionPatch, Mission);
 		em.merge(Mission);
