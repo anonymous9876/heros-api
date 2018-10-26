@@ -25,7 +25,7 @@ import name.anonymous.heros.api.web.service.ProductLineItemService;
  *
  */
 @RestController
-@RequestMapping("/api/business-units/{buCode}/hero/{hero}")
+@RequestMapping("/api/business-units/{buCode}/heros/{hero}")
 public class ProductLineItemController {
     @Autowired
     private ParamToRestResultsService paramToRestResultsService;

@@ -20,7 +20,7 @@ import name.anonymous.heros.api.web.service.MissionService;
 import name.anonymous.heros.api.web.service.ParamToRestResultsService;
 
 @RestController
-@RequestMapping("/api/business-units/{buCode}/hero/{hero}")
+@RequestMapping("/api/business-units/{buCode}/heros/{hero}")
 public class MissionByHeroController {
     @Autowired
     private ParamToRestResultsService paramToRestResultsService;
