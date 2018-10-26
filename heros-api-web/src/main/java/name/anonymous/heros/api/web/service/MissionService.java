@@ -70,7 +70,8 @@ public class MissionService {
 	}
 
 	@Transactional
-	public void putMission(Mission mission) {
+	public void putMission(MissionDto missionDtoPut) {
+		Mission mission = dozerBeanMapper.map(missionDtoPut, Mission.class);
 		missionRepository.putMission(mission);
 	}
 }

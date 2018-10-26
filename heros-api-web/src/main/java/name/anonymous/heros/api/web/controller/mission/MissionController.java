@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import name.anonymous.heros.api.web.dto.MissionDto;
-import name.anonymous.heros.api.web.model.entity.Mission;
 import name.anonymous.heros.api.web.service.MissionService;
 
 @RestController
@@ -40,7 +39,7 @@ public class MissionController {
     public void putOrder (
     	    @ApiParam(name = "buCode", value = "buCode", required = true) @PathVariable("buCode") String buCode,
     	    @ApiParam(name = "missionId", value = "missionId", required = true) @PathVariable("missionId") String missionId,
-    	    @RequestBody Mission mission) {
+    	    @RequestBody MissionDto mission) {
     	missionService.putMission(mission);
     }
 
