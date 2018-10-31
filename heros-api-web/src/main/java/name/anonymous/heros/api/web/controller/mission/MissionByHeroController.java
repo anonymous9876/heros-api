@@ -30,9 +30,9 @@ public class MissionByHeroController {
 
     @ApiOperation(value = "Retrieves a list")
     @ApiResponse(code = 200, message = "Success of the recovery", response = PaginableRestResult.class)
-    @GetMapping("mission-indirect-headers")
+    @GetMapping("missions")
     @ResponseBody
-    public PaginableRestResult<MissionDto> listOrderPaginated(
+    public PaginableRestResult<MissionDto> listMissionPaginated(
 	    @ApiParam(name = "buCode", value = "buCode", required = true) @PathVariable("buCode") String buCode,
 	    @ApiParam(name = "hero", value = "hero", required = true) @PathVariable("hero") String hero,
 	    @Valid PaginatedRequest paginatedRequest) {

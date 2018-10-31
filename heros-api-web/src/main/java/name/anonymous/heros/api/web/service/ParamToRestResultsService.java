@@ -31,12 +31,12 @@ public class ParamToRestResultsService {
 	 */
 	public <T> PaginableRestResult<T> getRestPaginationCriteria(
 			List<String> propertyPaths,
-			Function<RestPaginationCriteria, Iterable<T>> getModelListWithRestPaginationCriteria,
+			Function<RestPaginationCriteria, List<T>> getModelListWithRestPaginationCriteria,
 			Function<RestPaginationCriteria, Long> getCountBeforeFiltering,
 			Function<RestPaginationCriteria, Long> getCountAfterFiltering,
 			PaginatedRequest paginatedRequest) {
 		RestPaginationCriteria restPaginationCriteria = new RestPaginationCriteria(paginatedRequest);
-		Iterable<T> modelList = getModelListWithRestPaginationCriteria.apply(restPaginationCriteria);
+		List<T> modelList = getModelListWithRestPaginationCriteria.apply(restPaginationCriteria);
 
 		PaginableRestResult<T> restResult = new PaginableRestResult<>();
 		restResult.setData(modelList);

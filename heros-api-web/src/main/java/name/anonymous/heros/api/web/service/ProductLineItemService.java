@@ -23,7 +23,7 @@ public class ProductLineItemService {
 	private DozerBeanMapper dozerBeanMapper;
 
 	@Transactional
-	public Iterable<ProductLineItemDto> findAll(String buCode, String hero, String idMission,
+	public List<ProductLineItemDto> findAll(String buCode, String hero, String idMission,
 			RestPaginationCriteria restPaginationCriteria) {
 		Iterable<ProductLineItem> productLineItems = findAllEntities(buCode, hero, idMission,
 				restPaginationCriteria);

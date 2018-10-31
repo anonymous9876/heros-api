@@ -1,5 +1,7 @@
 package name.anonymous.heros.api.web.pagination.rest;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import name.anonymous.heros.api.web.pagination.rest.facet.Facet;
@@ -9,7 +11,7 @@ public class PaginableRestResult<T> {
 	private Long recordsFiltered;
 	private Long recordsTotal;
 
-	private Iterable<T> data;
+	private List<T> data;
 
 	private Facet facet;
 
@@ -25,10 +27,10 @@ public class PaginableRestResult<T> {
 	public void setRecordsTotal(Long recordsTotal) {
 		this.recordsTotal = recordsTotal;
 	}
-	public Iterable<T> getData() {
+	public List<T> getData() {
 		return data;
 	}
-	public void setData(Iterable<T> data) {
+	public void setData(List<T> data) {
 		this.data = data;
 	}
 

@@ -26,8 +26,8 @@ public class MissionController {
 
     @ApiOperation(value = "post")
     @ApiResponse(code = 201, message = "Success of the create")
-    @PostMapping("mission-indirect-headers/create")
-    public void postOrder(
+    @PostMapping("missions")
+    public void postMission(
 	    @ApiParam(name = "buCode", value = "buCode", required = true) @PathVariable("buCode") String buCode,
 	    @RequestBody @Valid MissionDto missionDto) {
     	missionService.newMission(buCode, missionDto);
@@ -35,8 +35,8 @@ public class MissionController {
 
     @ApiOperation(value = "put")
     @ApiResponse(code = 204, message = "Success of the update")
-    @PutMapping("mission-indirect-headers/{missionId}")
-    public void putOrder (
+    @PutMapping("missions/{missionId}")
+    public void putMission (
     	    @ApiParam(name = "buCode", value = "buCode", required = true) @PathVariable("buCode") String buCode,
     	    @ApiParam(name = "missionId", value = "missionId", required = true) @PathVariable("missionId") String missionId,
     	    @RequestBody MissionDto mission) {
@@ -45,18 +45,18 @@ public class MissionController {
 
     @ApiOperation(value = "patch")
     @ApiResponse(code = 204, message = "Success of the patch state")
-    @PatchMapping("mission-indirect-headers/{missionId}")
-    public void patchOrder (
+    @PatchMapping("missions/{missionId}")
+    public void patchMission (
     	    @ApiParam(name = "buCode", value = "buCode", required = true) @PathVariable("buCode") String buCode,
     	    @ApiParam(name = "missionId", value = "missionId", required = true) @PathVariable("missionId") String missionId,
-    	    @RequestBody MissionDto Mission) {
-    	missionService.patchMission(missionId, Mission);
+    	    @RequestBody MissionDto mission) {
+    	missionService.patchMission(missionId, mission);
     }
 
     @ApiOperation(value = "delete")
     @ApiResponse(code = 204, message = "Success of the delete")
-    @DeleteMapping("mission-indirect-headers/{missionId}")
-    public void deleteOrder(
+    @DeleteMapping("missions/{missionId}")
+    public void deleteMission(
 	    @ApiParam(name = "buCode", value = "buCode", required = true) @PathVariable("buCode") String buCode,
 	    @ApiParam(name = "missionId", value = "missionId", required = true) @PathVariable("missionId") String missionId) {
     	missionService.deleteMission(buCode, missionId);

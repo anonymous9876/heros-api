@@ -24,7 +24,7 @@ public class MissionService {
 	private DozerBeanMapper dozerBeanMapper;
 
 	@Transactional
-	public Iterable<MissionDto> findAll(String buCode, String hero, RestPaginationCriteria restPaginationCriteria) {
+	public List<MissionDto> findAll(String buCode, String hero, RestPaginationCriteria restPaginationCriteria) {
 		Iterable<Mission> missions = findAllEntities(buCode, hero, restPaginationCriteria);
 		List<MissionDto> result = new ArrayList<>();
 		for (Mission Mission : missions) {
